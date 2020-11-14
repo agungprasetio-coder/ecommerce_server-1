@@ -101,11 +101,6 @@
 
   OR
 
-    * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{"msg":"You not allowed to do this action"}`
-
-  OR
-
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{"msg":"Internal Server Error"}`
 

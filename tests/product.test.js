@@ -4,7 +4,6 @@ const {sequelize} = require('../models')
 const {queryInterface} = sequelize 
 const { User, Product } = require('../models')
 const { signToken } = require('../helpers/jwt')
-const { response } = require('express')
 
 
 let access_token_admin

@@ -22,8 +22,9 @@ class Controller {
             })
     }
 
-    static getProduct(req, res, next){
+    static getProducts(req, res, next){
         Product.findAll({
+            where: {UserId: req.loggedInUser.id},
             attributes:{exclude:['id', 'createdAt', 'UserId', 'updatedAt']}
         })
             .then(products=>{
