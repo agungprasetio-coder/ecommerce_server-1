@@ -3,6 +3,17 @@ const { comparePassword } = require('../helpers/bcrypt')
 const { signToken } = require('../helpers/jwt')
 
 class Controller {
+    static register(req, res, next) {
+        const { email, password } = req.body
+        User.create({email, password})
+            .then(user=>{
+                res.status(201).json({id: user.id, email: user.email})
+            })
+            .catch(err=>{
+                next(err)
+            })
+    }
+
     static login(req, res, next){
         const { email, password } = req.body
         User.findOne({

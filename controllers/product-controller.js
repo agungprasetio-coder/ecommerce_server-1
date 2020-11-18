@@ -24,8 +24,7 @@ class Controller {
 
     static getProducts(req, res, next){
         Product.findAll({
-            where: {UserId: req.loggedInUser.id},
-            attributes:{exclude:['id', 'createdAt', 'UserId', 'updatedAt']}
+            attributes:{exclude:['createdAt', 'UserId', 'updatedAt']}
         })
             .then(products=>{
                 //console.log(products, 'ini dari get di controller')
