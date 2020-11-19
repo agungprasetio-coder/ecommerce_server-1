@@ -28,7 +28,7 @@ class Controller {
         })
             .then(products=>{
                 //console.log(products, 'ini dari get di controller')
-                res.status(200).json({msg: products})
+                res.status(200).json({data: products})
             })
             .catch(err=>{
                 next(err)
