@@ -10,6 +10,7 @@ router.post('/login', UserController.login)
 
 router.post('/products', adminAuthentication, ProductController.postProduct)
 router.get('/products', authentication, ProductController.getProducts)
+router.get('/products/:id', authentication, adminAuthorization, ProductController.getProductById)
 router.put('/products/:id', authentication, adminAuthorization, ProductController.putProduct)
 router.delete('/products/:id', authentication, adminAuthorization, ProductController.deleteProduct)
 

@@ -24,11 +24,23 @@ class Controller {
 
     static getProducts(req, res, next){
         Product.findAll({
-            attributes:{exclude:['createdAt', 'UserId', 'updatedAt']}
+            attributes:{exclude:['createdAt', 'UserId', 'updatedAt']},
+            order: [['updatedAt', 'DESC']]
         })
             .then(products=>{
                 //console.log(products, 'ini dari get di controller')
                 res.status(200).json({data: products})
+            })
+            .catch(err=>{
+                next(err)
+            })
+    }
+
+    static getProductById (req, res, next) {
+        const { id } = req.params
+        Product.findByPk(id)
+            .then(product=>{
+                res.status(200).json({data: product})
             })
             .catch(err=>{
                 next(err)

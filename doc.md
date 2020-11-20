@@ -153,6 +153,50 @@
   * **Code:** 500 INTERNAL SERVER ERROR <br />
     **Content:** `{"msg":"Internal Server Error"}`
 
+**GET PRODUCT BY ID**
+
+----
+  `Get product by id`
+
+* **URL**
+
+  `/products/:id`
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+  **Required:**
+
+  `id=[integer]`
+
+* **Headers**
+
+  **Required:**
+
+  `access_token=[string]`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `{"data":{"id":5,"name":"Redmi Note 8","image_url":"https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//93/MTA-8613560/xiaomi_xiaomi_redmi_note_8_smartphone_-64_gb-_4_gb-_garansi_resmi_full01_t8sbogf6.jpg","price":3000000,"stock":3,"createdAt":"2020-11-19T06:23:39.897Z","updatedAt":"2020-11-20T04:00:11.234Z","UserId":null}}`
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{"msg":"Please login first!"}`
+
+  OR
+
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{"msg":"Product id 55 not found"}`
+
+  OR
+
+  * **Code:** 500 INTERNAL SERVER ERROR <br />
+    **Content:** `{"msg":"Internal Server Error"}`
 
 **UPDATE PRODUCT**
 
