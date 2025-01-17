@@ -1,8 +1,10 @@
 const request = require('supertest')
-const app = require('../app')
+const bcrypt = require('bcryptjs')
 const {sequelize} = require('../models')
 const {queryInterface} = sequelize
+const { User } = require('../models')
 const { hashPassword } = require('../helpers/bcrypt')
+const app = require('../app')
 
 const listUsers = [
     {email: 'admin@mail.com', password: '123456', role: 'admin'},
@@ -20,6 +22,7 @@ const users = listUsers.filter(user=>{
 })
 
 beforeAll((done)=>{
+    process.env.SECRET = 'abcdef';
     queryInterface.bulkInsert('Users', users, {})
         .then(()=>{
             done()
@@ -41,12 +44,13 @@ afterAll((done)=>{
 
 describe('POST /login', ()=>{
     it('tes login success', (done)=>{
+        // jest.spyOn(User, 'findOne').mockResolvedValue({email: 'admin@mail.com', password: '123456', role: 'admin'})
+        // jest.spyOn(bcrypt, 'compareSync').mockResolvedValue(true)
         request(app)
         .post('/login')
         .send({email: 'admin@mail.com', password: '123456'})
         .then(response=>{
             const {status, body} = response
-            //console.log(body, '<<<<<<<<<<<<<')
             expect(status).toBe(200)
             expect(body).toHaveProperty('access_token', expect.any(String))
             done()

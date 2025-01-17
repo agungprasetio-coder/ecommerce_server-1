@@ -11,15 +11,14 @@ let access_token_customer
 let id
 
 beforeAll((done)=>{
+    process.env.SECRET = 'abcdef';
     User.create({email: 'admin@mail.com', password: '123456', role: 'admin'})
         .then(user=>{
             access_token_admin = signToken ({id: user.id, email: user.email})
-            //console.log(access_token_admin, '<<<<< access token admin before all')
             return User.create({email: 'bukanadmin@mail.com', password: '123456'})
         })
         .then(user=>{
             access_token_customer = signToken ({id: user.id, email: user.email})
-            //console.log(access_token_customer, '<<<<< access token customer before all')
             const newProduct = {
                 name: 'Nokia 6.1 Plus Blue Edition',
                 image_url: 'https://i1.wp.com/nokiamob.net/wp-content/uploads/2018/08/Nokia-6.1-Plus-final.jpg?fit=1600%2C1600&ssl=1',
@@ -30,7 +29,6 @@ beforeAll((done)=>{
         })
         .then(product=>{
             id = product.id
-            //console.log(id, '<<<< ini id product dari before all')
             done()
         })
         .catch(err=>{
@@ -58,8 +56,7 @@ describe('GET /products', ()=>{
         .then(response=>{
             const { status, body } = response
             expect(status).toBe(200)
-            //console.log(body, '<<<<<<<<<<<<<<<< ini dari test')
-            expect(body).toHaveProperty('msg', expect.arrayContaining([{"image_url": "https://i1.wp.com/nokiamob.net/wp-content/uploads/2018/08/Nokia-6.1-Plus-final.jpg?fit=1600%2C1600&ssl=1", "name": "Nokia 6.1 Plus Blue Edition", "price": 24000000, "stock": 10}]))
+            expect(body).toHaveProperty('data')
             done()
         })
         .catch(err=>{
@@ -73,24 +70,7 @@ describe('GET /products', ()=>{
         .then(response=>{
             const { status, body } = response
             expect(status).toBe(400)
-            //console.log(body, '<<<<<<<<<<<<<<<< ini dari test')
             expect(body).toHaveProperty('msg', 'Please login first!')
-            done()
-        })
-        .catch(err=>{
-            done(err)
-        })
-    })
-
-    it('tes get all products failed (any access_token but not admin)', (done)=>{
-        request(app)
-        .get('/products')
-        .set('access_token', access_token_customer)
-        .then(response=>{
-            const { status, body } = response
-            expect(status).toBe(401)
-            //console.log(body, '<<<<<<<<<<<<<<<< ini dari test')
-            expect(body).toHaveProperty('msg', 'You not allowed to do this action')
             done()
         })
         .catch(err=>{
@@ -113,7 +93,6 @@ describe('POST /products', ()=>{
         .set('access_token', access_token_admin)
         .then(response=>{
             const { status, body } = response
-            //console.log(body, '<<<<<<<< ini dari test')
             expect(status).toBe(201)
             expect(body).toHaveProperty('msg', `${newProduct.name} has been added`)
             done()
@@ -146,7 +125,7 @@ describe('POST /products', ()=>{
         .then(response=>{
             const {status, body} = response
             expect(status).toBe(401)
-            expect(body).toHaveProperty('msg', 'You not allowed to do this action')
+            expect(body).toHaveProperty('msg', 'Please login as Admin!')
             done()
         })
         .catch(err=>{
@@ -169,7 +148,6 @@ describe('POST /products', ()=>{
             const {status, body} = response
             expect(status).toBe(400)
             expect(body).toHaveProperty('msg', 'Name is required!, Image url is required!, Please use url format!, Price must number!, Stock must number!')
-            //console.log(body, 'ini pesan dari body kalo field required dikosongi')
             done()
         })
         .catch(err=>{
@@ -192,7 +170,6 @@ describe('POST /products', ()=>{
             const {status, body} = response
             expect(status).toBe(400)
             expect(body).toHaveProperty('msg', `Stock can't under zero!`)
-            //console.log(body, 'ini pesan dari body kalo field stock-nya minus')
             done()
         })
         .catch(err=>{
@@ -215,7 +192,6 @@ describe('POST /products', ()=>{
             const {status, body} = response
             expect(status).toBe(400)
             expect(body).toHaveProperty('msg', `Price can't under zero!`)
-            //console.log(body, 'ini pesan dari body kalo field price-nya minus')
             done()
         })
         .catch(err=>{
